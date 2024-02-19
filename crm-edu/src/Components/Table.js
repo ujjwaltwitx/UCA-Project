@@ -81,18 +81,13 @@ export default function Table({
                   <SubjectList subs={row.tutoringDetail.subjects} />
                 </td>
                 <td className=" px-2 py-1">
-                  {row.status === "Active" && (
+                  {row.status === "ACTIVE" && (
                     <span className="text-green-500 rounded-full">
                       {row.status}
                     </span>
                   )}
-                  {row.status === "Inactive" && (
+                  {row.status === "INACTIVE" && (
                     <span className="text-red-500 rounded-full">
-                      {row.status}
-                    </span>
-                  )}
-                  {row.status === "Pending" && (
-                    <span className="text-yellow-500 rounded-full">
                       {row.status}
                     </span>
                   )}

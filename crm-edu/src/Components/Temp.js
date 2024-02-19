@@ -28,12 +28,12 @@ export default function Temp({ children }) {
       route: "./",
       icon: <DashboardIcon />,
     },
-    {
-      id: 2,
-      name: "Approvals",
-      route: "./approvals",
-      icon: <ApprovalIcon className="w-5 h-5" />,
-    },
+    // {
+    //   id: 2,
+    //   name: "Approvals",
+    //   route: "./approvals",
+    //   icon: <ApprovalIcon className="w-5 h-5" />,
+    // },
     {
       id: 3,
       name: "Mail",
@@ -41,25 +41,22 @@ export default function Temp({ children }) {
       icon: <MailIcon />,
     },
     {
+      id: 5,
+      name: "Tutors",
+      route: "./tutor",
+      icon: <SiteIcon />,
+    },
+    {
       id: 4,
       name: "Students",
       route: "./students",
       icon: <StudentIcon />,
     },
-  ];
-
-  const siteLinks = [
     {
-      id: 1,
-      name: "Reviews",
-      route: "./reviews",
+      id: 6,
+      name: "Groups",
+      route: "./groups",
       icon: <FormIcon />,
-    },
-    {
-      id: 2,
-      name: "Gallery",
-      route: "./gallery",
-      icon: <GalleryIcon className="w-[18px] h-[18px]" />,
     },
   ];
 
@@ -82,7 +79,7 @@ export default function Temp({ children }) {
         {/* Left */}
         <div className="w-[16rem] lg:w-[17rem] h-full p-2 flex flex-col bg-white-1 z-20 gap-9  ">
           {/* Title */}
-          <h3 className="font-medium px-4 text-red-500 text-lg">HighHopes</h3>
+          <h3 className="font-black px-2 text-3xl">CRM</h3>
 
           <div>
             <button
@@ -111,46 +108,6 @@ export default function Temp({ children }) {
                 </Link>
               );
             })}
-            <div className="flex flex-col relative">
-              <div className="flex items-center text-[15px] gap-2 py-[5px] px-4 rounded-full outline-none cursor-default">
-                <div className="w-5">
-                  <SiteIcon />
-                </div>
-                <p>Site Manager</p>
-              </div>
-
-              <div className="pl-9 relative ">
-                <div className="absolute h-full w-1 top-0 left-6 bg-zinc-200"></div>
-                {siteLinks.map((item) => {
-                  return (
-                    <Link
-                      key={item.id}
-                      to={item.route}
-                      target={item.target && item.target}
-                      className={`flex items-center text-[15px] gap-2 py-[5px] px-4 rounded-full outline-none hover:bg-zinc-300
-                    ${getNav(item.route)}
-                  `}
-                    >
-                      <div className="w-5 flex justify-center">
-                        {item.icon && item.icon}
-                      </div>
-                      <p>{item.name}</p>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          <div className="px-2">
-            <Link
-              to="/form"
-              target="_blank"
-              className="hover:shadow-md outline-none  text-blue-600 bg-blue-100 py-2 rounded-md flex items-baseline justify-center gap-2 transition-all"
-            >
-              <span className="ml-2">Enrollment Form</span>
-              <NewLinkIcon className="w-4 h-4" />
-            </Link>
           </div>
         </div>
 

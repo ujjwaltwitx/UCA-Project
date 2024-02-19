@@ -189,52 +189,15 @@ export const sendForm = async (data) => {
 };
 
 export const sendFormByAdmin = async (data) => {
-  const formData = {
-    firstName: data.firstName,
-    lastName: data.lastName,
-    dob: data.dob,
-    gender: data.gender,
-    schoolName: data.schoolName,
-    schoolYear: data.schoolYear,
-    addressDetail: {
-      addressStreet: data.addressStreet,
-      suburb: data.suburb,
-      postCode: data.postCode,
-      parentsEmail: data.parentsEmail,
-    },
-    parentDetail: [
-      {
-        name: data.parentName,
-        relation: data.relation,
-        phone: data.parentPhone,
-      },
-    ],
-    healthDetail: {
-      allergicFood: data.allergicFood,
-      medications: data.medications,
-      allergicMedication: data.allergicMedication,
-      healthProblem: data.healthProblem,
-    },
-    tutoringDetail: {
-      subjects: data.subjects,
-      frequency: 2,
-      days: [],
-      paymentMethod: data.paymentMethod,
-      timeSlots: data.timeSlots,
-    },
-    status: "Active",
-    approved: true,
-  };
   try {
     const response = await fetch(`${BASE_URL}/admin/save`, {
       method: "POST",
-      body: JSON.stringify(formData),
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
     });
-
     const responseData = await response.json();
     return responseData;
   } catch (error) {

@@ -12,86 +12,35 @@ export default function FormModal({ handleModal }) {
     lastName: "",
     dob: "",
     gender: "",
-    schoolName: "",
-    schoolYear: "",
 
     // * Address
     addressStreet: "",
-    suburb: "",
-    postCode: "",
-    parentsEmail: "",
+    pinCode: "",
+    email: "",
+    phone: "",
 
     // * Parent
-    //! Parent 1
-    parentName: "",
+    name: "",
     relation: "",
-    parentPhone: "",
-
-    // * Health
-    allergicFood: "",
-    medications: "",
-    allergicMedication: "",
-    healthProblem: "",
+    parentsEmail: "",
 
     // * Subjects
-    subjects: [],
-    frequency: 0,
-    days: [],
-    paymentMethod: "",
+    subjects: "",
   });
 
   const resetForm = form;
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [timeSlots, setTimeSlots] = useState([]);
 
-  const weekDays = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const subjectList = ["Maths", "English", "Science", "Arts or painting"];
-
-  const handleAddTimeSlot = () => {
-    setTimeSlots((prevSlots) => [
-      ...prevSlots,
-      {
-        day: "",
-        startAt: "",
-        endAt: "",
-      },
-    ]);
-  };
-
-  const handleUpdateSlot = (e, index, field) => {
-    const updatedTimeSlots = [...timeSlots];
-    updatedTimeSlots[index][field] = e.target.value;
-    setTimeSlots(updatedTimeSlots);
-  };
-
-  const handleRemoveSlot = (index) => {
-    const updatedTimeSlots = [...timeSlots];
-    updatedTimeSlots.splice(index, 1);
-    setTimeSlots(updatedTimeSlots);
-  };
+  const subjectList = ["Maths", "English", "Science", "Art"];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const sendingData = {
-        ...form,
-        timeSlots: timeSlots,
-      };
-
-      const response = await sendFormByAdmin(sendingData);
-      console.log("response", response);
+      const response = await sendFormByAdmin(form);
       if (response.status === 200) {
         alert("Form submitted successfully");
         setForm(resetForm);
@@ -119,13 +68,7 @@ export default function FormModal({ handleModal }) {
     }));
   };
 
-  const handleTimeSlotChange = (index, field, value) => {
-    const updatedTimeSlots = [...timeSlots];
-    updatedTimeSlots[index][field] = value;
-    setTimeSlots(updatedTimeSlots);
-  };
-
-  // console.log(form);
+  console.log(form);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -164,7 +107,7 @@ export default function FormModal({ handleModal }) {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 grid-flow-row-dense gap-4 px-5  pb-4 overflow-y-auto">
+            <div className="grid grid-cols-2 grid-flow-row-dense gap-10 px-5  pb-4 overflow-y-auto">
               {/* Personal */}
               <div className="flex flex-col gap-3">
                 <div className="pb-1 border-b border-zinc-400 flex gap-1 items-center ">
@@ -181,7 +124,7 @@ export default function FormModal({ handleModal }) {
                   <Field
                     name="Last Name"
                     type="text"
-                    value={form["lastName"]}
+                    value={form.lastName}
                     onChange={(e) => handleChange(e, "lastName")}
                     loading={loading}
                   />
@@ -200,20 +143,6 @@ export default function FormModal({ handleModal }) {
                     onChange={(e) => handleChange(e, "gender")}
                     loading={loading}
                   />
-                  <Field
-                    name="School Name"
-                    type="text"
-                    value={form.schoolName}
-                    onChange={(e) => handleChange(e, "schoolName")}
-                    loading={loading}
-                  />
-                  <Field
-                    name="School Year"
-                    type="number"
-                    value={form.schoolYear}
-                    onChange={(e) => handleChange(e, "schoolYear")}
-                    loading={loading}
-                  />
                 </div>
               </div>
 
@@ -223,86 +152,6 @@ export default function FormModal({ handleModal }) {
                   <h1 className="text-xl text-blue-600">Academic Profile</h1>
                 </div>
                 <div className="flex flex-col gap-3 ">
-                  <Field
-                    name="Frequency"
-                    type="number"
-                    value={form.frequency}
-                    onChange={(e) => handleChange(e, "frequency")}
-                    loading={loading}
-                  />
-
-                  {/* TimeSlots */}
-                  <div className="flex flex-col gap-1 text-[14px]">
-                    <h2 className=" font-semibold">Time Slots</h2>
-                    <div className="flex flex-col gap-1 w-[25rem]">
-                      {timeSlots.map((item, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="text-[15px] px-2 py-1 border border-zinc-400 bg-zinc-100 rounded-md flex justify-between items-center w-full gap-2"
-                          >
-                            <select
-                              name=""
-                              id=""
-                              disabled={loading}
-                              value={item.day}
-                              onChange={(e) =>
-                                handleUpdateSlot(e, index, "day")
-                              }
-                              className="w-[max-content] rounded-md outline-none bg-transparent "
-                            >
-                              <option value="">--select--</option>
-                              {weekDays.map((day, index) => {
-                                return (
-                                  <option key={index} value={day}>
-                                    {day}
-                                  </option>
-                                );
-                              })}
-                            </select>
-
-                            <div className="flex items-center gap-1">
-                              <input
-                                type="time"
-                                disabled={loading}
-                                className="pl-1 bg-transparent outline-none"
-                                value={item.startAt}
-                                onChange={(e) =>
-                                  handleUpdateSlot(e, index, "startAt")
-                                }
-                              />
-                              <input
-                                type="time"
-                                disabled={loading}
-                                className="pl-1 bg-transparent outline-none"
-                                value={item.endAt}
-                                onChange={(e) =>
-                                  handleUpdateSlot(e, index, "endAt")
-                                }
-                              />
-                            </div>
-
-                            <button
-                              onClick={() => handleRemoveSlot(index)}
-                              disabled={loading}
-                              className="text-red-500"
-                            >
-                              <DeleteIcon className="w-5 h-5" />
-                            </button>
-                          </div>
-                        );
-                      })}
-
-                      <div>
-                        <button
-                          onClick={() => handleAddTimeSlot()}
-                          className="text-blue-500"
-                        >
-                          Add
-                        </button>
-                      </div>
-                    </div>
-                  </div>
                   <div className="flex flex-col gap-1 text-[14px]">
                     <h2 className=" font-semibold">Subjects</h2>
 
@@ -310,46 +159,25 @@ export default function FormModal({ handleModal }) {
                       {subjectList.map((sub, index) => (
                         <div key={index} className="flex items-center gap-2">
                           <input
-                            type="checkbox"
+                            type="radio"
                             disabled={loading}
                             id={sub}
-                            checked={form["subjects"].includes(sub)}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setForm((prevForm) => ({
-                                  ...prevForm,
-                                  subjects: [...prevForm["subjects"], sub],
-                                }));
-                              } else {
-                                setForm((prevForm) => ({
-                                  ...prevForm,
-                                  subjects: prevForm["subjects"].filter(
-                                    (item) => item !== sub
-                                  ),
-                                }));
-                              }
-                            }}
+                            name="subject"
+                            value={form.subjects}
+                            onChange={(e) => handleChange(e, "subjects")}
                           />
                           <label htmlFor={sub}>{sub}</label>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <Field
-                    name="Payment Method"
-                    type="select"
-                    options={["Full Amount", "Ezi-debit /Pay Weekly"]}
-                    value={form.paymentMethod}
-                    onChange={(e) => handleChange(e, "paymentMethod")}
-                    loading={loading}
-                  />
                 </div>
               </div>
 
               {/* Address */}
               <div className="flex flex-col gap-3">
                 <div className="pb-1 border-b border-zinc-400 flex gap-1 items-center ">
-                  <h1 className="text-xl text-blue-600">Address Details</h1>
+                  <h1 className="text-xl text-blue-600">Contact Details</h1>
                 </div>
                 <div className="flex flex-col gap-3 ">
                   <Field
@@ -360,24 +188,24 @@ export default function FormModal({ handleModal }) {
                     loading={loading}
                   />
                   <Field
-                    name="Suburb"
-                    type="text"
-                    value={form["suburb"]}
-                    onChange={(e) => handleChange(e, "suburb")}
-                    loading={loading}
-                  />
-                  <Field
-                    name="PostCode"
+                    name="Pin Code"
                     type="number"
-                    value={form.postCode}
-                    onChange={(e) => handleChange(e, "postCode")}
+                    value={form.pinCode}
+                    onChange={(e) => handleChange(e, "pinCode")}
                     loading={loading}
                   />
                   <Field
-                    name="Parent's Email"
+                    name="Email"
                     type="email"
-                    value={form.parentsEmail}
-                    onChange={(e) => handleChange(e, "parentsEmail")}
+                    value={form.email}
+                    onChange={(e) => handleChange(e, "email")}
+                    loading={loading}
+                  />
+                  <Field
+                    name="Phone Number"
+                    type="number"
+                    value={form.phone}
+                    onChange={(e) => handleChange(e, "phone")}
                     loading={loading}
                   />
                 </div>
@@ -390,10 +218,10 @@ export default function FormModal({ handleModal }) {
                 </div>
                 <div className="flex flex-col gap-3 ">
                   <Field
-                    name="Parent Name"
+                    name="Name"
                     type="text"
-                    value={form.parentName}
-                    onChange={(e) => handleChange(e, "parentName")}
+                    value={form.name}
+                    onChange={(e) => handleChange(e, "name")}
                     loading={loading}
                   />
                   <Field
@@ -404,47 +232,10 @@ export default function FormModal({ handleModal }) {
                     loading={loading}
                   />
                   <Field
-                    name="Phone Number"
-                    type="number"
-                    value={form.parentPhone}
-                    onChange={(e) => handleChange(e, "parentPhone")}
-                    loading={loading}
-                  />
-                </div>
-              </div>
-
-              {/* Medical */}
-              <div className="flex flex-col gap-3">
-                <div className="pb-1 border-b border-zinc-400 flex gap-1 items-center ">
-                  <h1 className="text-xl text-blue-600">Medical Information</h1>
-                </div>
-                <div className="flex flex-col gap-3 ">
-                  <Field
-                    name="Food Allergy?"
-                    type="textarea"
-                    value={form.allergicFood}
-                    onChange={(e) => handleChange(e, "allergicFood")}
-                    loading={loading}
-                  />
-                  <Field
-                    name="On any Medication?"
-                    type="textarea"
-                    value={form["allergicMedication"]}
-                    onChange={(e) => handleChange(e, "allergicMedication")}
-                    loading={loading}
-                  />
-                  <Field
-                    name="Allergic to any medication?"
-                    type="textarea"
-                    value={form.healthProblem}
-                    onChange={(e) => handleChange(e, "healthProblem")}
-                    loading={loading}
-                  />
-                  <Field
-                    name="Suffering from any health problems?"
-                    type="textarea"
-                    value={form.medications}
-                    onChange={(e) => handleChange(e, "medications")}
+                    name="Email"
+                    type="email"
+                    value={form.parentsEmail}
+                    onChange={(e) => handleChange(e, "parentsEmail")}
                     loading={loading}
                   />
                 </div>

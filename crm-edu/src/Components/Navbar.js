@@ -54,6 +54,15 @@ export default function Navbar({ location }) {
     }
   };
 
+  const handleAdd = () => {
+    const url = window.location.href;
+    if (url.includes("students")) {
+      navigate("/dashboard/students/add");
+    } else if (url.includes("tutor")) {
+      navigate("/dashboard/tutor/add");
+    }
+  };
+
   return (
     <div className="w-full h-[8vh] p-2 flex items-center">
       <div className="flex w-full items-center gap-2 justify-between">
@@ -131,7 +140,15 @@ export default function Navbar({ location }) {
         {/*
         //! Profile
         */}
-        <div className="lg:flex-1 flex justify-end items-center relative">
+        <div className="lg:flex-1 flex gap-5 justify-end items-center relative">
+          <div>
+            <button
+              onClick={handleAdd}
+              className="rounded-md bg-blue-600 text-white px-4 py-1"
+            >
+              Add
+            </button>
+          </div>
           {isOpen && <LeftArrowHead className="w-3 h-3" />}
           <button
             onClick={handleIsOpen}
