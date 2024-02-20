@@ -13,12 +13,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 mongoose.connect(
-  "mongodb+srv://blogging_backend:ujjwal2887@cluster0.nzvlqlv.mongodb.net/crm_db"
+  "mongodb+srv://ujjwaltwitx:ujjwal288719@cluster0.efu4ewb.mongodb.net/student_manager?retryWrites=true&w=majority",
+  { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
 app.use("/admin", require("./routes/admin.js"));
 app.use("/student", require("./routes/student.js"));
 app.use("/site", require("./routes/site.js"));
+app.use("/appointment", require("./routes/appointment.js"))
+app.use("/group", require("./routes/group.js"))
 
 app.get("/", (req, res) => {
   res.send("How are you all");
