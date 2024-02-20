@@ -8,4 +8,4 @@ const adminSchema = mongoose.Schema({
 
 const AdminModel = mongoose.model('admin', adminSchema)
 
-// export default AdminModel;
+exports.default = AdminModel;
