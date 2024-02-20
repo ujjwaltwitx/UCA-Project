@@ -1,5 +1,6 @@
 import React from "react";
 import Loader from "./Loader";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function TableCommon({
   headings,
@@ -7,6 +8,9 @@ export default function TableCommon({
   loading = false,
   error,
 }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const url = location.pathname.split("/");
   return (
     <div className="overflow-x-auto rounded-xl border">
       <table className="w-full text-left rounded-xl">
@@ -22,15 +26,19 @@ export default function TableCommon({
         <tbody>
           {data &&
             !loading &&
-            data.map((row) => (
-              <tr className="hover:bg-gray-100 text-[15px] cursor-pointer">
-                {headings.map((head, index) => (
-                  <td key={index} className=" px-2 py-1">
-                    {row[head.toLowerCase()]}
-                  </td>
-                ))}
-              </tr>
-            ))}
+            data.map((row) => {
+              return (
+                <tr className="hover:bg-gray-100 text-[15px] cursor-pointer">
+                  {headings.map((head, index) => (
+                    <td key={index} className=" px-2 py-1">
+                      <Link to={`/dashboard/${url[2]}/${row._id}`}>
+                        {row[head.toLowerCase()]}
+                      </Link>
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
           {
             // ! This is the loading state
             loading && (

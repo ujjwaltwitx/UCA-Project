@@ -1,67 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import dataFields from "./data";
 
-const dataFields = [
-  {
-    name: "First Name",
-    fieldName: "firstName",
-    type: "text",
-  },
-  {
-    name: "Last Name",
-    fieldName: "lastName",
-    type: "text",
-  },
-  {
-    name: "Date of birth",
-    fieldName: "dob",
-    type: "date",
-  },
-  {
-    name: "Gender",
-    fieldName: "gender",
-    type: "select",
-    options: ["Male", "Female", "Others"],
-  },
-  {
-    name: "Pin Code",
-    fieldName: "pinCode",
-    type: "number",
-  },
-  {
-    name: "Phone",
-    fieldName: "phone",
-    type: "number",
-  },
-  {
-    name: "Email",
-    fieldName: "email",
-    type: "email",
-  },
-];
 export default function AddTutor() {
   const [loadingForm, setLoadingForm] = React.useState(false);
   const [subjects, setSubjects] = React.useState([
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
+    "Maths",
+    "Physics",
+    "Chemistry",
+    "Biology",
+    "English",
+    "Hindi",
+    "Sanskrit",
+    "History",
+    "Geography",
+    "Political Science",
   ]);
-  const [form, setForm] = React.useState({
-    name: "",
-    salary: "",
-    subjects: [],
-    addressStreet: "",
-    pinCode: "",
-    phone: "",
-    email: "",
-  });
+  const formFields = {};
+  dataFields.forEach((item) => (formFields[item.fieldName] = null));
+  const [form, setForm] = React.useState(formFields);
+  const [groups, setGroups] = React.useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,8 +29,6 @@ export default function AddTutor() {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
-
-  console.log(form);
 
   return (
     <div className="max-w-[28rem] w-full">
@@ -94,7 +50,7 @@ export default function AddTutor() {
                   <div className="flex items-center justify-between gap-2">
                     <h2 className=" font-semibold">{item?.name}</h2>
                   </div>
-                  {item.type === "select" ? (
+                  {item.type === "select" && (
                     <div className="flex flex-col gap-3">
                       <select
                         onChange={handleChange}
@@ -112,42 +68,31 @@ export default function AddTutor() {
                         })}
                       </select>
                     </div>
-                  ) : (
-                    item.type !== "checkbox" && (
-                      <input
-                        type={item.type}
-                        disabled={loadingForm}
-                        value={form[item.fieldName]}
-                        name={item.fieldName}
-                        onChange={handleChange}
-                        className="text-[15px] focus:outline-2 focus:outline-offset-1 focus:outline-blue-600 focus:bg-blue-50  border border-zinc-400 bg-zinc-100 rounded-md w-[28rem] px-2 pt-1 pb-[3px]"
-                      />
-                    )
                   )}
-                  {item.type === "checkbox" && (
+                  {(item.type === "number" ||
+                    item.type === "text" ||
+                    item.type === "email" ||
+                    item.type === "date") && (
+                    <input
+                      type={item.type}
+                      disabled={loadingForm}
+                      value={form[item.fieldName]}
+                      name={item.fieldName}
+                      onChange={handleChange}
+                      className="text-[15px] focus:outline-2 focus:outline-offset-1 focus:outline-blue-600 focus:bg-blue-50  border border-zinc-400 bg-zinc-100 rounded-md w-[28rem] px-2 pt-1 pb-[3px]"
+                    />
+                  )}
+                  {item.type === "subject" && (
                     <div className="grid grid-cols-3 gap-2 border border-zinc-400 bg-zinc-100 rounded-md p-3">
                       {subjects?.map((sub, index) => (
                         <div key={index} className="flex items-center gap-2">
                           <input
-                            type="checkbox"
+                            type="radio"
                             disabled={loadingForm}
                             id={sub}
-                            checked={form["subjects"].includes(sub)}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setForm((prevForm) => ({
-                                  ...prevForm,
-                                  subjects: [...prevForm["subjects"], sub],
-                                }));
-                              } else {
-                                setForm((prevForm) => ({
-                                  ...prevForm,
-                                  subjects: prevForm["subjects"].filter(
-                                    (item) => item !== sub
-                                  ),
-                                }));
-                              }
-                            }}
+                            name={item.fieldName}
+                            value={form[item.fieldName]}
+                            onChange={handleChange}
                           />
                           <label htmlFor={sub}>{sub}</label>
                         </div>
