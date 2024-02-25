@@ -1,6 +1,6 @@
 const mongoose  = require('mongoose')
 
-const appointmentSchema = mongoose.Schema({
+const appointmentSchema = new mongoose.Schema({
     studentName : String,
     parentName : String,
     query : String,
@@ -10,5 +10,5 @@ const appointmentSchema = mongoose.Schema({
     endTime : Date,
 }, { timestamps: true })
 
-const AppointmentModel = mongoose.model('appointment', appointmentSchema)
+const AppointmentModel = new mongoose.model('appointment', appointmentSchema)
 module.exports = AppointmentModel

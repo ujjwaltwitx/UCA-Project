@@ -1,11 +1,11 @@
 const { default: mongoose } = require("mongoose");
 
-const adminSchema = mongoose.Schema({
+const adminSchema = new mongoose.Schema({
     username : String,
     password : String
 })
 
 
-const AdminModel = mongoose.model('admin', adminSchema)
+const AdminModel = new mongoose.model('admin', adminSchema)
 
 exports.default = AdminModel;

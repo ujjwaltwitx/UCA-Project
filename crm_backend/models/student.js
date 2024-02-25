@@ -1,6 +1,6 @@
 const { default: mongoose, mongo } = require("mongoose");
 
-const parentSchema = mongoose.Schema({
+const parentSchema = new mongoose.Schema({
   name: String,
   relation: String,
   parentsEmail: String,
@@ -31,6 +31,6 @@ const studentSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const StudentModel = mongoose.model("student", studentSchema);
+const StudentModel = new mongoose.model("student", studentSchema);
 
 module.exports = StudentModel;

@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose");
 
-const tutorSchema = mongoose.Schema({
+const tutorSchema = new mongoose.Schema({
     name : String,
     salary : Number,
     joiningDate : Date,
@@ -20,4 +20,4 @@ const tutorSchema = mongoose.Schema({
 
 
 const TutorModel = mongoose.model('tutor', tutorSchema)
-exports.default = TutorModel
+module.exports = TutorModel

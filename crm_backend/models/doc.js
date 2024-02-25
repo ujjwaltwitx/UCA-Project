@@ -1,10 +1,13 @@
 const { default: mongoose, mongo } = require("mongoose")
 
-const docSchema = mongoose.Schema({
+const docSchema = new mongoose.Schema({
     title : String,
+    entityId : {
+        type : mongoose.Schema.Types.ObjectId,
+    },
     link : String,
     size : Number,
 })
 
 const DocModel = mongoose.model('doc', docSchema)
-exports.default = DocModel
+module.exports = DocModel
