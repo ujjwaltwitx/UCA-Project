@@ -5,7 +5,7 @@ import { getStudents } from "../../Utils/Api/Api";
 import { ReloadIcon } from "../../Components/Icons";
 
 export default function Students() {
-  const headings = ["Name", "Email", "Phone", "Subject", "Status", "Action"];
+  const headings = ["Name", "Email", "Phone", "Subject", "Status"];
   const [modal, setModal] = useState(false); //? To show the modal of comment
   const [reload, setReload] = useState(false);
   const [error, setError] = useState(null);

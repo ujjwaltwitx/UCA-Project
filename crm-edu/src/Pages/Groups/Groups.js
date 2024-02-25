@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import TableCommon from "../../Components/TableCommon";
 import {
   Link,
   Route,
@@ -11,30 +10,21 @@ import {
 import GroupSingle from "./GroupSingle";
 import axios from "axios";
 import Loader from "../../Components/Loader";
+import { BASE_URL } from "../../Utils/constant";
+import useGroups from "../../Utils/hooks/useGroups";
 
 const headings = ["Name", "No of Students", "No of Tutors"];
 export default function Groups() {
-  const [data, setData] = useState([]);
   const [form, setForm] = useState({
     name: "",
   });
   const [loadingForm, setLoadingForm] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  const fetchGroups = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get("http://localhost:4000/group/view");
-      setData(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-    setLoading(false);
-  };
+  const { groups: data, isLoading: loading } = useGroups();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +35,7 @@ export default function Groups() {
         noStudents: 0,
         tutors: [],
       };
-      await axios.post("http://localhost:4000/group/add", sendingData);
+      await axios.post(`${BASE_URL}/group/add`, sendingData);
       setForm({ name: "" });
     } catch (error) {
       console.log(error);
@@ -54,21 +44,15 @@ export default function Groups() {
     }
   };
 
-  console.log(data);
-
-  useEffect(() => {
-    fetchGroups();
-  }, []);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="w-full max-w-screen-xxl border h-full flex gap-5 overflow-y-auto overflow-x-hidden"
+      className="w-full max-w-screen-xxl h-full flex gap-5 overflow-y-auto overflow-x-hidden"
     >
       {/* Left side */}
-      <div className="flex-1 border flex flex-col gap-5">
+      <div className="flex-1 flex flex-col gap-5">
         <div className="flex flex-col gap-3">
           <h1 className="text-2xl font-semibold pb-1 border-b border-zinc-300">
             Create group
