@@ -1,4 +1,5 @@
-export const BASE_URL = "https://crm-backend-tiix.vercel.app";
+import axios from "axios";
+import { BASE_URL } from "../constant";
 // export const BASE_URL = "http://localhost:4000";
 
 // export const BASE_URL = "http://127.0.0.1:4000";
@@ -6,16 +7,8 @@ export const BASE_URL = "https://crm-backend-tiix.vercel.app";
 // ======================= GET =============================================================================
 //? Get all students
 export const getStudents = async (filters, pageNo) => {
-  var options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(filters || {}),
-  };
-  const response = await fetch(`${BASE_URL}/student/list?p=${pageNo}`, options);
-  const data = await response.json();
-  return data;
+  const response = await axios.get(`${BASE_URL}/student/list?p=${pageNo}`);
+  return response?.data;
 };
 
 //? Get student by id

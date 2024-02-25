@@ -1,10 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import dataFields from "./data";
+import useGroups from "../../Utils/hooks/useGroups";
+import axios from "axios";
+import { BASE_URL } from "../../Utils/constant";
 
 export default function AddTutor() {
   const [loadingForm, setLoadingForm] = React.useState(false);
-  const [subjects, setSubjects] = React.useState([
+  const subjects = [
     "Maths",
     "Physics",
     "Chemistry",
@@ -15,20 +18,29 @@ export default function AddTutor() {
     "History",
     "Geography",
     "Political Science",
-  ]);
+  ];
   const formFields = {};
   dataFields.forEach((item) => (formFields[item.fieldName] = null));
   const [form, setForm] = React.useState(formFields);
-  const [groups, setGroups] = React.useState([]);
+  const { groups, isLoading } = useGroups();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      await axios.post(`${BASE_URL}/student/save`, form);
+      navigate("/dashboard/students");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
+
+  console.log(form?.subject);
 
   return (
     <div className="max-w-[28rem] w-full">
@@ -59,6 +71,7 @@ export default function AddTutor() {
                         name={item.fieldName}
                         className="outline-none w-[28rem] bg-zinc-100 border border-zinc-400  rounded-md px-2 py-1"
                       >
+                        <option value="">select</option>
                         {item?.options.map((option) => {
                           return (
                             <option key={option} value={option}>
@@ -90,13 +103,38 @@ export default function AddTutor() {
                             type="radio"
                             disabled={loadingForm}
                             id={sub}
-                            name={item.fieldName}
+                            name="subject"
                             value={form[item.fieldName]}
-                            onChange={handleChange}
+                            onChange={() => {
+                              setForm((prevForm) => ({
+                                ...prevForm,
+                                subject: sub,
+                              }));
+                            }}
                           />
                           <label htmlFor={sub}>{sub}</label>
                         </div>
                       ))}
+                    </div>
+                  )}
+                  {item.type === "group" && (
+                    <div className="flex flex-col gap-3">
+                      <select
+                        onChange={handleChange}
+                        value={form[item.fieldName]}
+                        disabled={loadingForm}
+                        name={item.fieldName}
+                        className="outline-none w-[28rem] bg-zinc-100 border border-zinc-400  rounded-md px-2 py-1"
+                      >
+                        <option value="">select</option>
+                        {groups?.map((option) => {
+                          return (
+                            <option key={option?._id} value={option?._id}>
+                              {option?.name}
+                            </option>
+                          );
+                        })}
+                      </select>
                     </div>
                   )}
                 </div>

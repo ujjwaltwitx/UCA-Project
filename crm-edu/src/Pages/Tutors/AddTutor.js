@@ -1,5 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useGroups from "../../Utils/hooks/useGroups";
+import axios from "axios";
+import { BASE_URL } from "../../Utils/constant";
 
 const dataFields = [
   {
@@ -41,18 +44,6 @@ const dataFields = [
 ];
 export default function AddTutor() {
   const [loadingForm, setLoadingForm] = React.useState(false);
-  const [groups, setGroups] = React.useState([
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-  ]);
   const [form, setForm] = React.useState({
     name: "",
     salary: "",
@@ -61,18 +52,26 @@ export default function AddTutor() {
     pinCode: "",
     phone: "",
     email: "",
+    joiningDate: new Date(),
   });
 
+  const { groups, isLoading } = useGroups();
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      setForm((prev) => ({ ...prev, joiningDate: new Date() }));
+      await axios.post(`${BASE_URL}/tutor/save`, form);
+      navigate("/dashboard/tutor");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
-
-  console.log(form);
 
   return (
     <div className="max-w-[28rem] w-full">
@@ -126,30 +125,30 @@ export default function AddTutor() {
                   )}
                   {item.type === "checkbox" && (
                     <div className="grid grid-cols-3 gap-2 border border-zinc-400 bg-zinc-100 rounded-md p-3">
-                      {groups?.map((sub, index) => (
+                      {groups?.map((group, index) => (
                         <div key={index} className="flex items-center gap-2">
                           <input
                             type="checkbox"
                             disabled={loadingForm}
-                            id={sub}
-                            checked={form["groups"].includes(sub)}
+                            id={group?._id}
+                            checked={form["groups"].includes(group?._id)}
                             onChange={(e) => {
                               if (e.target.checked) {
                                 setForm((prevForm) => ({
                                   ...prevForm,
-                                  groups: [...prevForm["groups"], sub],
+                                  groups: [...prevForm["groups"], group?._id],
                                 }));
                               } else {
                                 setForm((prevForm) => ({
                                   ...prevForm,
                                   groups: prevForm["groups"].filter(
-                                    (item) => item !== sub
+                                    (item) => item?._id !== group?._id
                                   ),
                                 }));
                               }
                             }}
                           />
-                          <label htmlFor={sub}>{sub}</label>
+                          <label htmlFor={group?._id}>{group?.name}</label>
                         </div>
                       ))}
                     </div>

@@ -51,51 +51,46 @@ export default function Table({
         <tbody>
           {data &&
             !loading &&
-            data.map((row) => (
+            data?.map((row) => (
               <tr
                 key={row._id}
                 className="hover:bg-green-100 text-[15px] cursor-pointer"
               >
                 <td
                   className=" px-2 py-1"
-                  onClick={() => handleRowClick(row._id)}
+                  onClick={() => handleRowClick(row?._id)}
                 >
-                  {`${row.firstName} ${row.lastName}`}
+                  {`${row?.firstName} ${row?.lastName}`}
                 </td>
                 <td
                   className=" px-2 py-1"
-                  onClick={() => handleRowClick(row._id)}
+                  onClick={() => handleRowClick(row?._id)}
                 >
-                  {row.addressDetail.parentsEmail}
+                  {row?.addressDetail?.parentsEmail}
                 </td>
                 <td
                   className=" px-2 py-1"
-                  onClick={() => handleRowClick(row._id)}
+                  onClick={() => handleRowClick(row?._id)}
                 >
-                  {row.parentDetail[0].phone}
+                  {row?.contactDetail?.phone}
                 </td>
                 <td
                   className=" px-2 py-1"
-                  onClick={() => handleRowClick(row._id)}
+                  onClick={() => handleRowClick(row?._id)}
                 >
-                  <SubjectList subs={row.tutoringDetail.subjects} />
+                  {row?.subject}
                 </td>
                 <td className=" px-2 py-1">
-                  {row.status === "ACTIVE" && (
+                  {row?.status === "ACTIVE" && (
                     <span className="text-green-500 rounded-full">
-                      {row.status}
+                      {row?.status}
                     </span>
                   )}
-                  {row.status === "INACTIVE" && (
+                  {row?.status === "INACTIVE" && (
                     <span className="text-red-500 rounded-full">
-                      {row.status}
+                      {row?.status}
                     </span>
                   )}
-                </td>
-                <td>
-                  <button onClick={() => handleComment(row._id, row.comments)}>
-                    <CommentIcon />
-                  </button>
                 </td>
               </tr>
             ))}

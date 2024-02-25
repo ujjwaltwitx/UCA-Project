@@ -23,7 +23,7 @@ export default function DashboardRoutes({ user }) {
         <Route path="/student/:id" element={<Student />} />
         <Route path="/students/add" element={<AddStudent />} />
         <Route path="/tutor/*" element={<Tutors />} />
-        <Route path="/groups/" element={<Groups />} />
+        <Route path="/groups/*" element={<Groups />} />
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </Temp>
