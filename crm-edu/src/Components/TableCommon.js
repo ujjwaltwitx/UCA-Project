@@ -8,7 +8,6 @@ export default function TableCommon({
   loading = false,
   error,
 }) {
-  const navigate = useNavigate();
   const location = useLocation();
   const url = location.pathname.split("/");
   return (
@@ -16,7 +15,7 @@ export default function TableCommon({
       <table className="w-full text-left rounded-xl">
         <thead>
           <tr className="bg-gray-200">
-            {headings.map((head, index) => (
+            {headings?.map((head, index) => (
               <th key={index} className="p-2  rounded-">
                 {head}
               </th>
@@ -26,7 +25,7 @@ export default function TableCommon({
         <tbody>
           {data &&
             !loading &&
-            data.map((row) => {
+            data?.map((row) => {
               return (
                 <tr className="hover:bg-gray-100 text-[15px] cursor-pointer">
                   {headings.map((head, index) => (

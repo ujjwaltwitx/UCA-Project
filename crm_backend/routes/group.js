@@ -6,7 +6,7 @@ const { default: mongoose } = require("mongoose")
 
 router.get("/view", async (req, res) => {
     try {
-        const groupList = await GroupModel.findAll()
+        const groupList = await GroupModel.find()
         res.json(groupList)
     } catch (error) {
         res.status = 500;
@@ -93,15 +93,14 @@ router.patch("/update/:id", async (req, res) => {
 router.post("/add", async (req, res) => {
 
     const data = req.body;
-    if (!data || !data.name || !data.noStudents || !data.tutors) {
-        return res.status(400).send({
-            status: "error",
-            message: "Missing required fields in the request body."
-        });
+    if (!data.name || data.name === "" || data.noStudents === "" || !data.tutors) {
+        res.status(400).send({
+            "message": "Name is required"
+        })
     }
 
     const group = new GroupModel(data);
-    group.save()
+    await group.save()
 
     res.status(200).send({
         status: "successful"
