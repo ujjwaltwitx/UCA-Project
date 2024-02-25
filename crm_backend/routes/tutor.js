@@ -1,8 +1,20 @@
 const express = require("express");
 const { default: mongoose } = require("mongoose");
 const TutorModel = require("../models/tutor");
+const ContactModel = require("../models/contact");
+const GroupModel = require("../models/group");
 const router = express.Router();
 
+
+router.get("/view", async (req, res) => {
+    const data = await TutorModel.find().populate("contactId")
+    if(data.count == 0){
+        return res.status(400).send({
+            "message" : "No Tutors present",
+        })
+    }
+    return res.status(200).json(data)
+})
 
 router.get("/view/:id", async (req, res)=>{
     try{
@@ -34,14 +46,39 @@ router.get("/view/:id", async (req, res)=>{
 router.post("/save", async (req, res)=>{
     try{
         const data = req.body
-        if(!data || !data.salary || !data.joiningDate || !data.contactId){
+        if(!data || !data.salary || !data.joiningDate){
             return res.status(400).send({
                 "message" : "Object parameters not valid",
             })
         }
-        const tutorInstance  = new TutorModel(data)
-        tutorInstance.save()
+        const contactData = {
+            "addressStreet" : data.addressStreet,
+            "pinCode" : data.pinCode,
+            "phone" : data.phone,
+            "email" : data.email,
+        }
 
+        const contactInsatance = new ContactModel(contactData)
+        await contactInsatance.save();
+        const tutorData = {
+            "name" : data.name,
+            "salary" : data.salary,
+            "joiningDate" : data.joiningDate,
+            "docs" : data.docs,
+            "groups" : data.groups,
+            "contactId" : contactInsatance._id
+        }
+        console.log(data)
+        const tutorInstance  = new TutorModel(tutorData)
+        await tutorInstance.save()
+        console.log(tutorInstance)
+        data.groups.forEach(async element => {
+            console.log(element)
+            await GroupModel.updateOne(
+                { _id: element },
+                { $push: { tutors: tutorInstance._id } },
+              );
+        });
         res.status(200).send({
             "message" : "Data saved successfully"
         })
@@ -107,4 +144,6 @@ router.patch("/update/:id", async (req, res) => {
         })
     }
 })
+
+module.exports = router
 

@@ -6,7 +6,7 @@ const parentSchema = new mongoose.Schema({
   parentsEmail: String,
 });
 
-const studentSchema = mongoose.Schema(
+const studentSchema = new mongoose.Schema(
   {
     firstName: String,
     lastName: String,
@@ -25,12 +25,12 @@ const studentSchema = mongoose.Schema(
     status: {
       type : String,
       enum : ['ACTIVE', 'INACTIVE'],
-      default : 'INACTIVE',
+      default : 'ACTIVE',
     },
   },
   { timestamps: true }
 );
 
-const StudentModel = new mongoose.model("student", studentSchema);
+const StudentModel = mongoose.model("student", studentSchema);
 
 module.exports = StudentModel;

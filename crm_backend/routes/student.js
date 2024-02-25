@@ -9,22 +9,12 @@ const AppointmentModel = require("../models/appointment.js");
 const countPerPage = 15;
 
 //  APIs from here are meant for CRUD on students
-router.post("/list/", async (req, res) => {
+router.get("/list", async (req, res) => {
   try {
-    const filters = req.body || {};
     const page = req.query.p || 0;
-    const studentList = await StudentModel.find(filters, {
-      firstName: 1,
-      lastName: 1,
-      "tutoringDetail.subjects": 1,
-      "addressDetail.parentsEmail": 1,
-      parentDetail: 1,
-      status: 1,
-      approved: 1,
-      comments: 1,
-    })
+    const studentList = await StudentModel.find()
       .skip(page * countPerPage)
-      .limit(countPerPage);
+      .limit(countPerPage).populate("contactDetail");
     res.json(studentList);
   } catch (error) {
     res.status = 500;
@@ -129,23 +119,22 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.get("/all", async (req, res) => {
-  try {
-    const studentList = await StudentModel.find({});
-    res.json(studentList);
-  } catch (error) {
-    res.status(500).json({ error: "Server Error!" });
-  }
-});
+// router.get("/all", async (req, res) => {
+//   try {
+//     const studentList = await StudentModel.find({});
+//     res.json(studentList);
+//   } catch (error) {
+//     res.status(500).json({ error: "Server Error!" });
+//   }
+// });
 
 router.post("/save", (req, res) => {
   try {
     const data = req.body;
-    data.approved = false;
     const student = new StudentModel(data);
     student.save();
     res.status(200).json({
-      message: "Data received",
+      message: "Record Saved",
     });
   } catch (error) {
     res.status(500).json({ error: error });

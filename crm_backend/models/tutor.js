@@ -6,15 +6,15 @@ const tutorSchema = new mongoose.Schema({
     joiningDate : Date,
     docs : {
         type : [mongoose.Schema.Types.ObjectId],
-        ref : "docSchema"
+        ref : "doc"
     },
     groups : {
         type : [mongoose.Schema.Types.ObjectId],
-        ref : "groupSchema"
+        ref : "group"
     },
     contactId : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : "contactSchema"
+        ref : "contact"
     }
 })
 

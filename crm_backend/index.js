@@ -22,6 +22,7 @@ app.use("/student", require("./routes/student.js"));
 app.use("/site", require("./routes/site.js"));
 app.use("/appointment", require("./routes/appointment.js"))
 app.use("/group", require("./routes/group.js"))
+app.use("/tutor", require("./routes/tutor.js"))
 
 app.get("/", (req, res) => {
   res.send("How are you all");

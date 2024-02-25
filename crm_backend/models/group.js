@@ -5,7 +5,7 @@ const groupSchema = new mongoose.Schema({
     noStudents : Number,
     tutors : {
         type : [mongoose.Schema.Types.ObjectId],
-        ref : "tutorSchema", 
+        ref : "tutor", 
     }
 })
 

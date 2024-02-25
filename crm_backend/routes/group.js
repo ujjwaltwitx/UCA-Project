@@ -22,7 +22,7 @@ router.get("/view/:id", async (req, res) => {
         message: "Not a valid objectId",
       });
     }
-    const group = await GroupModel.findById(id);
+    const group = await GroupModel.findById(id).populate("tutors");
     res.json(group);
   } catch (error) {
     res.status = 500;

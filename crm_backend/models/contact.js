@@ -7,5 +7,5 @@ const contactSchema = new mongoose.Schema({
     email : String,
 });
 
-const ContactModel = new mongoose.model('contact', contactSchema)
-exports.default = ContactModel
+const ContactModel = mongoose.model('contact', contactSchema)
+module.exports = ContactModel
