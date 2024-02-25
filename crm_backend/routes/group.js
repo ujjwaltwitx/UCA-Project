@@ -93,7 +93,8 @@ router.patch("/update/:id", async (req, res) => {
 router.post("/add", async (req, res) => {
 
     const data = req.body;
-    if (!data || !data.name || !data.noStudents || !data.tutors) {
+    if(data.noStudents === null) data.noStudents = 0;
+    if (!data || !data.name || !data.tutors) {
         return res.status(400).send({
             status: "error",
             message: "Missing required fields in the request body."
