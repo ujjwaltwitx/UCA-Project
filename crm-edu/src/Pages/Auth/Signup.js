@@ -1,20 +1,19 @@
 import React, { useState } from "react";
-import { login } from "../../Utils/Firebase/auth";
-import { EyeClose, EyeOpen } from "../../Components/Icons";
+import { signup } from "../../Utils/Firebase/auth";
+import { EyeOpen, EyeClose } from "../../Components/Icons";
 
-export default function Login() {
-  const [credentials, setCredentials] = useState({ email: "", pass: "" });
+export default function Signup() {
+  const [credentials, setCredentials] = useState({ username: "", pass: "" });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
-    if (credentials.email.length > 0 && credentials.pass.length > 0) {
+    if (credentials.username.length > 0 && credentials.pass.length > 0) {
       setError(null);
     }
   };
-
   const handleShowPass = (e) => {
     e.preventDefault();
     setShowPass(!showPass);
@@ -25,7 +24,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      await login(credentials.email, credentials.pass);
+      await signup(credentials.username, credentials.pass);
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -34,21 +33,21 @@ export default function Login() {
     }
   };
 
-  const { email, pass } = credentials;
+  const { username, pass } = credentials;
 
   return (
     <div className="relative min-h-screen w-full flex flex-col justify-center items-center bg-p1">
       <div className="max-w-full w-[26rem] rounded-md bg-black-1 text-white p-8 shadow-lg">
         <div className="flex flex-col gap-6 items-center">
-          <h1 className="font-black text-5xl">Welcome</h1>
+          <h1 className="font-black text-5xl">Welcome, sigup</h1>
 
           <form onSubmit={handleSubmit} className="w-full flex flex-col gap-5">
             {/* Fields */}
             <div className="flex flex-col gap-4">
-              {/* email */}
+              {/* username */}
               <div className="flex flex-col gap-2 w-full">
                 <label
-                  htmlFor="email"
+                  htmlFor="username"
                   className="text-[12px] font-semibold uppercase text-zinc-400"
                 >
                   USERNAME
@@ -56,10 +55,10 @@ export default function Login() {
                 </label>
                 <input
                   type="text"
-                  name="email"
-                  id="email"
+                  name="username"
+                  id="username"
                   onChange={handleChange}
-                  value={email}
+                  value={username}
                   className="bg-zinc-900 rounded-md text-[16px] p-2 outline-none border-none"
                 />
               </div>

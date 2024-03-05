@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "../constant";
+import axiosInstance from "../../axiosInstance";
 // export const BASE_URL = "http://localhost:4000";
 
 // export const BASE_URL = "http://127.0.0.1:4000";
@@ -7,7 +8,7 @@ import { BASE_URL } from "../constant";
 // ======================= GET =============================================================================
 //? Get all students
 export const getStudents = async (filters, pageNo) => {
-  const response = await axios.get(`${BASE_URL}/student/list?p=${pageNo}`);
+  const response = await axiosInstance.get(`/student/list?p=${pageNo}`);
   return response?.data;
 };
 
