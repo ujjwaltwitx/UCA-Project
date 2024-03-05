@@ -1,5 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { auth } from "../Firebase/firebase";
+import axiosInstance from "../../axiosInstance";
+import { logout } from "../Firebase/auth";
 
 const AuthContext = createContext();
 
@@ -8,11 +10,14 @@ const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      setUser(currentUser);
-      setIsLoading(false);
-    });
-    return () => unsubscribe();
+    const token = localStorage.getItem("crmtoken");
+    if (token) {
+      setUser(token);
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+    }
+    setIsLoading(false);
   }, []);
 
   return (
