@@ -3,8 +3,9 @@ const router = express.Router();
 
 const GroupModel = require("../models/group.js");
 const { default: mongoose } = require("mongoose");
+const authenticateRequest = require("../utils.js");
 
-router.get("/view", async (req, res) => {
+router.get("/view", authenticateRequest, async (req, res) => {
   try {
     const groupList = await GroupModel.find();
     res.json(groupList);
@@ -14,7 +15,7 @@ router.get("/view", async (req, res) => {
   }
 });
 
-router.get("/view/:id", async (req, res) => {
+router.get("/view/:id", authenticateRequest, async (req, res) => {
   try {
     const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -30,7 +31,7 @@ router.get("/view/:id", async (req, res) => {
   }
 });
 
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", authenticateRequest, async (req, res) => {
   const id = req.params.id;
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -59,7 +60,7 @@ router.delete("/delete/:id", async (req, res) => {
   }
 });
 
-router.patch("/update/:id", async (req, res) => {
+router.patch("/update/:id", authenticateRequest, async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       res.status(400).send({
@@ -91,7 +92,7 @@ router.patch("/update/:id", async (req, res) => {
   }
 });
 
-router.post("/add", async (req, res) => {
+router.post("/add", authenticateRequest, async (req, res) => {
   const data = req.body;
   if (
     !data.name ||

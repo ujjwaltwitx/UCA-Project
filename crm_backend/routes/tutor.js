@@ -3,10 +3,11 @@ const { default: mongoose } = require("mongoose");
 const TutorModel = require("../models/tutor");
 const ContactModel = require("../models/contact");
 const GroupModel = require("../models/group");
+const authenticateRequest = require("../utils");
 const router = express.Router();
 
 
-router.get("/view", async (req, res) => {
+router.get("/view", authenticateRequest, async (req, res) => {
     const data = await TutorModel.find().populate("contactId")
     if(data.count == 0){
         return res.status(400).send({
@@ -16,7 +17,7 @@ router.get("/view", async (req, res) => {
     return res.status(200).json(data)
 })
 
-router.get("/view/:id", async (req, res)=>{
+router.get("/view/:id", authenticateRequest, async (req, res)=>{
     try{
         const id = req.params.id
         if(!mongoose.Types.ObjectId.isValid(id)){
@@ -43,7 +44,7 @@ router.get("/view/:id", async (req, res)=>{
 })
 
 
-router.post("/save", async (req, res)=>{
+router.post("/save", authenticateRequest, async (req, res)=>{
     try{
         const data = req.body
         if(!data || !data.salary || !data.joiningDate){
@@ -90,7 +91,7 @@ router.post("/save", async (req, res)=>{
     }
 })
 
-router.delete("/delete/:id", async (req, res)=>{
+router.delete("/delete/:id", authenticateRequest, async (req, res)=>{
     try{
         const id  = req.params.id
         if(!mongoose.Types.ObjectId.isValid(id)){
@@ -117,7 +118,7 @@ router.delete("/delete/:id", async (req, res)=>{
 })
 
 
-router.patch("/update/:id", async (req, res) => {
+router.patch("/update/:id", authenticateRequest, async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             res.status(400).send({

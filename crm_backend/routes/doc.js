@@ -2,9 +2,10 @@ const express = require("express");
 const { default: mongoose } = require("mongoose");
 const router = express.Router();
 
-const DocModel = require("../models/doc.js")
+const DocModel = require("../models/doc.js");
+const authenticateRequest = require("../utils.js");
 
-router.get("/doc/:id", async (req, res)=>{
+router.get("/doc/:id", authenticateRequest, async (req, res)=>{
     try{
         const id = req.params.id;
         if(!mongoose.Types.ObjectId.isValid(id)){
@@ -23,7 +24,7 @@ router.get("/doc/:id", async (req, res)=>{
     }
 })
 
-router.post("/save", async (req, res)=>{
+router.post("/save", authenticateRequest, async (req, res)=>{
     try{
         const data = req.body
         const model = new DocModel(data)
@@ -45,7 +46,7 @@ router.post("/save", async (req, res)=>{
     }
 })
 
-router.delete("/delete/:id", async (req, res)=>{
+router.delete("/delete/:id", authenticateRequest, async (req, res)=>{
     try{
         const id = req.params.id
         if(!mongoose.Types.ObjectId.isValid(id)){

@@ -5,11 +5,12 @@ const nodemailer = require("nodemailer");
 
 const StudentModel = require("../models/student.js");
 const AppointmentModel = require("../models/appointment.js");
+const authenticateRequest = require("../utils.js");
 
 const countPerPage = 15;
 
 //  APIs from here are meant for CRUD on students
-router.get("/list", async (req, res) => {
+router.get("/list", authenticateRequest, async (req, res) => {
   try {
     const page = req.query.p || 0;
     const studentList = await StudentModel.find()
@@ -22,7 +23,7 @@ router.get("/list", async (req, res) => {
   }
 });
 
-router.get("/single", async (req, res) => {
+router.get("/single", authenticateRequest, async (req, res) => {
   try {
     const id = req.query.id;
     const student = await StudentModel.findById(id);
@@ -31,7 +32,7 @@ router.get("/single", async (req, res) => {
 });
 
 
-router.get("/search", async (req, res) => {
+router.get("/search", authenticateRequest, async (req, res) => {
   try {
     var filter = {}
     const firstName = req.query.firstName
@@ -50,7 +51,7 @@ router.get("/search", async (req, res) => {
   }
 });
 
-router.get("/misc", async (req, res) => {
+router.get("/misc", authenticateRequest, async (req, res) => {
   const active = await StudentModel.find({
     status: "Active",
     approved: true,
@@ -98,7 +99,7 @@ router.get("/misc", async (req, res) => {
   res.json(data);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticateRequest, async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
 
@@ -119,16 +120,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// router.get("/all", async (req, res) => {
-//   try {
-//     const studentList = await StudentModel.find({});
-//     res.json(studentList);
-//   } catch (error) {
-//     res.status(500).json({ error: "Server Error!" });
-//   }
-// });
-
-router.post("/save", (req, res) => {
+router.post("/save", authenticateRequest, async (req, res) => {
   try {
     const data = req.body;
     const student = new StudentModel(data);
@@ -143,7 +135,7 @@ router.post("/save", (req, res) => {
 
 // APIS from here are meant for providing basic email functionality
 
-router.post("/sendemails", (req, res) => {
+router.post("/sendemails", authenticateRequest, async (req, res) => {
   const data = req.body;
   const transporter = nodemailer.createTransport({
     service: "gmail",
